@@ -1,0 +1,4 @@
+conect manually to esp32 through bluetooth to make initial confoiguration of wifi for example
+
+https://electropeak.com/learn/esp32-setup-wifi-connection-using-bluetooth/?srsltid=AfmBOorG3f-YFz0pimFJqtExcXnmi03VKwlch3pqcWAsZcGZDZsFg_GX
+
