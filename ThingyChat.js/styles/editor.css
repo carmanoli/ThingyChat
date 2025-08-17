@@ -4,25 +4,28 @@
     max-width: 1200px;
     margin: 0 auto;
 }
-
 #pixel-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    /* These will be set by JavaScript */
+    grid-template-columns: repeat(var(--grid-size, 8), 1fr); 
     gap: 2px;
     width: fit-content;
-    background-color: #f0f0f0; /* Cor de fundo ligeiramente diferente para contraste */
+    max-width: 520px; /* Limit the max width for larger grids */
+    background-color: #f0f0f0;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
 .pixel {
-    width: 50px;
-    height: 50px;
+    /* The size will be set by JavaScript */
+    width: var(--pixel-size, 50px);
+    height: var(--pixel-size, 50px);
     cursor: pointer;
     border: 1px solid #dee2e6;
     transition: transform 0.1s;
 }
+
 
 .pixel:hover {
     transform: scale(1.05);

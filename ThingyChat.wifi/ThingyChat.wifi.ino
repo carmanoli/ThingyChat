@@ -53,7 +53,7 @@ void loop() {
 
   // keepAlive
   static unsigned long prev = 0;
-  if (millis() - prev >= 5000) {
+  if (millis() - prev >= 30000) {
     Serial.println("keepAlive");
     prev = millis();
   }

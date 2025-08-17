@@ -46,12 +46,6 @@ An interactive and thought-provoking art piece that connects the user to the pro
 *   **Functionality:** A user accesses the PWA, selects their country (complete with flag icons), and enters their date of birth. The application fetches real life expectancy data from the World Bank API and calculates three key figures: days already lived, average days remaining, and the percentage of their life completed. These numbers are then displayed on three dedicated 7-segment displays, accompanied by symbolic 8x8 emojis for birth, life, and death.
 *   **Tech Showcase:** Demonstrates API integration, personalized data visualization, and creating an emotional impact with technology.
 
-<p align="center">
-  <img src="image/memento_mori_01.jpg" alt="Memento Mori Project Photo 1" width="45%">
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="image/memento_mori_02.jpg" alt="Memento Mori Project Photo 2" width="45%">
-</p>
-
 ### 3. The Geiger Counter Sign
 
 This project turns invisible environmental data into a clear and understandable public sign. It's a modern-day "Canary in a Coal Mine."

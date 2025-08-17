@@ -3,7 +3,7 @@
 #include "serial_rs232.h"
 
 void initSerial() {
-  Serial1.begin(BAUD_RATE, SERIAL_8E2, RX_PIN, TX_PIN);
+  Serial1.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
   Serial.println("[Serial] UART (D6/D7) inicializado");
 }
 
