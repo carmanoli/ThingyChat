@@ -1,0 +1,54 @@
+<!-- Conteúdo de pages/memento_mori.html (atualizado) -->
+
+<link rel="stylesheet" href="styles/memento_mori.css">
+
+<!-- Títulos centrados usando classes do Bootstrap -->
+<div class="text-center">
+    <h1>Memento Mori</h1>
+    <p class="lead">Life Expectancy Calculator</p> <!-- 'lead' dá mais destaque ao parágrafo -->
+</div>
+
+<div class="memento-mori-container">
+  <!-- Status da conexão também centrado -->
+  <div id="connectionStatus" class="text-center mb-4">Connection Status: <span id="status">Unknown</span></div>
+  
+  <form id="lifeForm">
+    <!-- Usando a estrutura de formulário do Bootstrap para melhor alinhamento e espaçamento -->
+    <div class="mb-3 row">
+      <label for="age" class="col-sm-4 col-form-label">Age (years):</label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control" id="age" min="0" max="120" required>
+      </div>
+    </div>
+    
+    <div class="mb-3 row">
+      <label for="sex" class="col-sm-4 col-form-label">Gender:</label>
+      <div class="col-sm-8">
+        <select id="sex" class="form-select" required>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="mb-3 row">
+      <label for="country" class="col-sm-4 col-form-label">Country:</label>
+      <div class="col-sm-8">
+        <select id="country" class="form-select" required>
+          <!-- JavaScript will populate this list -->
+          <option value="">Loading countries...</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Botão centrado -->
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <button type="button" id="calculateBtn" class="btn btn-primary">Calculate & Send</button>
+    </div>
+  </form>
+  
+  <!-- Resultado final, centrado -->
+  <div id="result" class="text-center mt-4"></div>
+</div>
+
+<script src="js/memento_mori.js"></script>

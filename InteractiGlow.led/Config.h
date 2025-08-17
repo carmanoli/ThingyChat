@@ -2,15 +2,17 @@
 #define CONFIG_H
 
 // Configurações do painel LED
-#define LED_PIN     3
-#define NUM_LEDS    256
+#define LED_PIN     3 // on geugeir is 3 becau 2 is used as intrrupt
+#define NUM_LEDS    192
 #define BRIGHTNESS  50
 #define LED_TYPE    WS2812
 #define COLOR_ORDER GRB
 
 
 // Em Config.h
-#define ACTIVE_PROJECT 0 // 0=Geiger, 1=AirQuality, etc.
+// #define ACTIVE_PROJECT 0 // 0=Geiger, 1=AirQuality, etc.
+#define ACTIVE_PROJECT 1 // test leds
+#define ACTIVE_PROJECT 2 // memento_mori
 
 
 const int GEIGER_INTERRUPT_PIN = 2; // Pino D3 para o sinal do Geiger

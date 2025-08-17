@@ -14,6 +14,10 @@ CRGB leds[NUM_LEDS];  // Agora está declarado aqui
   Geiger myGeiger(GEIGER_INTERRUPT_PIN, GEIGER_STROBE_PIN);
 #endif
 
+#if ACTIVE_PROJECT == 2  
+  #include "MementoMori.h"
+#endif
+
 
 
 
@@ -40,6 +44,7 @@ void setup() {
   #if ACTIVE_PROJECT == 0
     myGeiger.begin();
   #endif
+
   Serial.println("Booting...");
 }
 
@@ -57,33 +62,57 @@ void loop() {
     booting = false;
     clearAllMatrices();
 
-    if (display == 2) {
-      for (int i = 0; i < NUM_LEDS; i++) {
 
+    #if ACTIVE_PROJECT == 1 // Test leds
+      for (int i = 0; i < NUM_LEDS; i++) {
         leds[i] = getColorFromString("WHITE");
         FastLED.show();
 
         Serial.print("Testing Led: ");
         Serial.println(i);
       }
-    }
+    
+    #endif
+
 
     if (display == 1) {
       displayString("CARLOS", 0);
       displayString("OLIVEIRA", 1);
     }
 
-    if (mode == 0) {
+
+    #if ACTIVE_PROJECT == 0
       drawRadioactiveSymbol16x16(leds, NUM_LEDS, radioactive_block);
       FastLED.show();
       delay(10);
-    }
+    #endif
+
+    #if ACTIVE_PROJECT == 2
+    FastLED.clear();
+    
+    // Draw emojis on each matrix
+    MementMori::drawEgg(leds, 0, NUM_LEDS);    // First matrix (index 0)
+    MementMori::drawHeart(leds, 1, NUM_LEDS);  // Second matrix (index 1)
+    MementMori::drawSkull(leds, 2, NUM_LEDS);  // Third matrix (index 2)
+    
+    FastLED.show();
+    #endif
+
+
   }
 
   #if ACTIVE_PROJECT == 0
     myGeiger.update();
     // E aqui a lógica para lidar com os dados do Geiger
     myGeiger.handle(Serial1);
+    unsigned long currentCPM = myGeiger.getCPM();
+    if (currentCPM > 100) {
+      Serial1.println("GEIGER_LEVEL:2");
+    } else if (currentCPM > 50) {
+      Serial1.println("GEIGER_LEVEL:1");
+    }
+
+
   #elif ACTIVE_PROJECT == 1
     // myAirQuality.update();
     // handleAirQualityMode();
@@ -91,15 +120,7 @@ void loop() {
 
 
 
-  if (mode == 0) {
 
-    unsigned long currentCPM = myGeiger.getCPM();
-    if (currentCPM > 100) {
-      Serial1.println("GEIGER_LEVEL:2");
-    } else if (currentCPM > 50) {
-      Serial1.println("GEIGER_LEVEL:1");
-    }
-  }
 
 
   if (Serial.available()) {

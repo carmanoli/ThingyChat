@@ -1,0 +1,129 @@
+/* Reset mais forte para garantir que não há margens no topo */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #f8f9fa;
+}
+
+/* NOVO: Wrapper para o conteúdo abaixo do header */
+.page-content {
+    /* O padding-top foi movido para os elementos filhos para mais controle */
+}
+
+/* Sidebar styling (AJUSTADO) */
+#sidebar {
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0; /* Começa no topo absoluto */
+    padding-top: 56px; /* Espaço interno para o conteúdo não ficar sob o header */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* Conteúdo principal (AJUSTADO) */
+#main-content {
+    padding-top: calc(56px + 20px); /* Padding para o header + padding original */
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    margin-left: 300px; /* Espaço para a sidebar em desktop */
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/*
+   IMPORTANTE: CERTIFIQUE-SE DE QUE REMOVEU COMPLETAMENTE ESTAS REGRAS ANTIGAS DO SEU CSS.
+   ELAS ESTAVAM A ESCONDER O BOTÃO.
+*/
+/*
+#sidebarToggle {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    z-index: 1100;
+    display: none;
+}
+*/
+
+/* Media query para responsividade (AJUSTADO) */
+@media (max-width: 991.98px) {
+    #sidebar {
+        transform: translateX(-100%); /* Escondido por padrão */
+        z-index: 1050; /* Z-index maior para sobrepor o conteúdo */
+    }
+    
+    #sidebar.active {
+        transform: translateX(0);
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    
+    #main-content {
+        margin-left: 0; /* Ocupa a largura total */
+    }
+}
+
+
+/* --- SEUS ESTILOS ORIGINAIS (INTOCADOS) --- */
+/* (Todo o seu CSS para .editor-container, .pixel, #color-palette, etc. continua aqui) */
+.editor-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+#pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+    width: fit-content;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+.pixel {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    transition: transform 0.1s;
+}
+.pixel:hover {
+    transform: scale(1.05);
+}
+#color-palette {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.color-option {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+.color-option:hover {
+    transform: scale(1.1);
+}
+.color-option.selected {
+    border-color: #000;
+    transform: scale(1.1);
+}
+textarea {
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    resize: none;
+}
+.btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}

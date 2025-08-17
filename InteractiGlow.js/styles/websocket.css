@@ -1,0 +1,10 @@
+/* Conteúdo de styles/websocket.css */
+#status {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#status.connected {
+    color: green;
+}

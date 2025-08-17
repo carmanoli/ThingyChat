@@ -1,3 +1,4 @@
+// Config.cpp
 #include "Config.h"
 
 const int radioactive_block[4] = {0, 1, 2, 3};

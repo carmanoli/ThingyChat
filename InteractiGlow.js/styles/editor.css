@@ -1,0 +1,67 @@
+/* Conteúdo de styles/editor.css */
+
+.editor-container { /* Adicionado para centralizar se necessário */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+    width: fit-content;
+    background-color: #f0f0f0; /* Cor de fundo ligeiramente diferente para contraste */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.pixel {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    transition: transform 0.1s;
+}
+
+.pixel:hover {
+    transform: scale(1.05);
+    border-color: #333;
+}
+
+#color-palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); /* Torna a paleta responsiva */
+    gap: 8px;
+    margin-bottom: 20px;
+    max-width: 500px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.selected {
+    border-color: #007bff; /* Cor de destaque do Bootstrap */
+    transform: scale(1.15);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+}
+
+textarea {
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    overflow-y: auto;
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    resize: vertical; /* Permite redimensionar verticalmente */
+}

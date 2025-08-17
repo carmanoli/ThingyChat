@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Controle LED</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    input, button {
+      margin: 10px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    #status {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Controle LEDs</h1>
+  <div>
+    <label for="ipInput">IP do Servidor: </label>
+    <input type="text" id="ipInput" placeholder="Ex: 10.0.1.102" value="10.0.1.102">
+    <button onclick="connectWebSocket()">Conectar</button>
+  </div>
+  <div id="status">Desconectado</div>
+  <button onclick="sendCommand('HEART')">Mostrar Coração</button>
+  <button onclick="sendCommand('CROSS')">Mostrar X</button>
+  <button onclick="sendCommand('SMILE')">Mostrar Sorriso</button>
+  <button onclick="sendCommand('OFF')">Apagar</button>
+
+  <script>
+    let ws = null;
+
+    function connectWebSocket() {
+      const ip = document.getElementById('ipInput').value.trim();
+      if (!ip) {
+        document.getElementById('status').textContent = 'Por favor, insira um IP válido';
+        return;
+      }
+
+      const wsUrl = `ws://${ip}:81/`;
+      document.getElementById('status').textContent = 'Conectando...';
+
+      if (ws) {
+        ws.close();
+      }
+
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = function() {
+        document.getElementById('status').textContent = 'Conectado ao servidor';
+        document.getElementById('status').style.color = 'green';
+      };
+
+      ws.onclose = function() {
+        document.getElementById('status').textContent = 'Desconectado';
+        document.getElementById('status').style.color = 'red';
+        ws = null;
+      };
+
+      ws.onerror = function() {
+        document.getElementById('status').textContent = 'Erro na conexão';
+        document.getElementById('status').style.color = 'red';
+        ws = null;
+      };
+    }
+
+    function sendCommand(cmd) {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(cmd);
+        document.getElementById('status').textContent = `Comando ${cmd} enviado`;
+      } else {
+        document.getElementById('status').textContent = 'Não conectado. Por favor, conecte ao servidor.';
+      }
+    }
+
+    // Connect automatically on page load with the default IP
+    window.onload = function() {
+      connectWebSocket();
+    };
+  </script>
+</body>
+</html>

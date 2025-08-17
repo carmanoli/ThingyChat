@@ -1,0 +1,49 @@
+<!-- Conteúdo de pages/editor.html -->
+
+<!-- Link para o CSS específico desta página (já o tínhamos, mantém-se) -->
+<link rel="stylesheet" href="styles/editor.css">
+
+<!-- Conteúdo completo do editor, copiado do seu ficheiro antigo -->
+<h1 class="mb-4">Emoji Editor</h1>
+
+<div class="editor-container">
+  <div id="pixel-grid" class="mx-auto mb-4"></div>
+
+  <div class="controls-container">
+    <h5>Color Palette</h5>
+    <div id="color-palette" class="mb-4"></div>
+
+    <div class="mb-4">
+      <button id="clear-btn" class="btn btn-danger me-2">Clear</button>
+      <button id="copy-btn" class="btn btn-primary">Copy Arduino Code</button>
+      <button id="save-btn" class="btn btn-success">Save as File</button>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <h5>Arduino Code</h5>
+        <textarea id="code-output" class="form-control" rows="8" readonly></textarea>
+      </div>
+      <div class="col-md-6 mb-3">
+        <h5>
+          JSON Format
+          <button id="load-btn" class="btn btn-sm btn-warning float-end">
+            Load from JSON
+          </button>
+        </h5>
+        <textarea id="json-output" class="form-control" rows="8"></textarea>
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      <h5>How to use:</h5>
+      <ol>
+        <li>Draw your emoji by clicking pixels</li>
+        <li>Copy Arduino code or save as JSON file</li>
+        <li>To load: paste JSON in the right box and click "Load from JSON"</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script src="js/editor.js"></script>
