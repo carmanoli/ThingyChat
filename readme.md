@@ -1,6 +1,8 @@
 # ThingyChat - An Open-Source Interactive Signage Platform
 
-![ThingyChat Logo](image/logo.png)
+<p align="center">
+  <img src="image/logo.png" alt="ThingyChat Logo" width="50%">
+</p>
 
 Welcome to ThingyChat! This is an open-source framework designed to empower makers, hobbyists, and creators to build their own smart, connected, and interactive signage. Forget static signs—ThingyChat makes information come alive.
 
@@ -31,8 +33,11 @@ This is the core demonstration of the ThingyChat platform. A simple yet powerful
 *   **Functionality:** Users can draw custom emojis or patterns on a 16x16 grid in the web app. The drawing is transmitted in real-time via WebSockets to the Xiao, which then commands the Arduino to display it instantly on a 256-pixel WS2812 LED matrix.
 *   **Tech Showcase:** Highlights the seamless, low-latency communication between a web browser and the hardware.
 
-![Emoji Display Project Photo 1](https://github.com/carmanoli/ThingyChat/blob/main/image/emoji_display_01.jpg)
-![Emoji Display Project Photo 2](https://github.com/carmanoli/ThingyChat/blob/main/image/emoji_display_02.jpg)
+<p align="center">
+  <img src="image/emoji_display_01.jpg" alt="Emoji Display Project Photo 1" width="45%">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="image/emoji_display_02.jpg" alt="Emoji Display Project Photo 2" width="45%">
+</p>
 
 ### 2. The Memento Mori
 
@@ -41,8 +46,11 @@ An interactive and thought-provoking art piece that connects the user to the pro
 *   **Functionality:** A user accesses the PWA, selects their country (complete with flag icons), and enters their date of birth. The application fetches real life expectancy data from the World Bank API and calculates three key figures: days already lived, average days remaining, and the percentage of their life completed. These numbers are then displayed on three dedicated 7-segment displays, accompanied by symbolic 8x8 emojis for birth, life, and death.
 *   **Tech Showcase:** Demonstrates API integration, personalized data visualization, and creating an emotional impact with technology.
 
-![Memento Mori Project Photo 1](https://github.com/carmanoli/ThingyChat/blob/main/image/memento_mori_01.jpg)
-![Memento Mori Project Photo 2](https://github.com/carmanoli/ThingyChat/blob/main/image/memento_mori_02.jpg)
+<p align="center">
+  <img src="image/memento_mori_01.jpg" alt="Memento Mori Project Photo 1" width="45%">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="image/memento_mori_02.jpg" alt="Memento Mori Project Photo 2" width="45%">
+</p>
 
 ### 3. The Geiger Counter Sign
 
@@ -51,8 +59,11 @@ This project turns invisible environmental data into a clear and understandable 
 *   **Functionality:** A Geiger-Müller tube detects ambient radiation in real-time. The Arduino counts the pulses (Counts Per Minute - CPM) and sends the data to the Xiao. The Xiao then displays the corresponding status on an LED matrix using intuitive emojis: a smiley face for safe levels, a concerned face for elevated levels, and a skull for danger. The raw CPM is also shown on a 7-segment display.
 *   **Tech Showcase:** Real-time sensor data processing, serial communication between microcontrollers, and creating effective data visualization for public awareness.
 
-![Geiger Counter Project Photo 1](https://github.com/carmanoli/ThingyChat/blob/main/image/geiger_counter_01.jpg)
-![Geiger Counter Project Photo 2](https://github.com/carmanoli/ThingyChat/blob/main/image/geiger_counter_02.jpg)
+<p align="center">
+  <img src="image/geiger_counter_01.jpg" alt="Geiger Counter Project Photo 1" width="45%">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="image/geiger_counter_02.jpg" alt="Geiger Counter Project Photo 2" width="45%">
+</p>
 
 ---
 
