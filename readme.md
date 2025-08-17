@@ -1,6 +1,6 @@
 # ThingyChat - An Open-Source Interactive Signage Platform
 
-![ThingyChat Logo](https://github.com/carmanoli/ThingyChat/image/logo.png)
+![ThingyChat Logo](image/logo.png)
 
 Welcome to ThingyChat! This is an open-source framework designed to empower makers, hobbyists, and creators to build their own smart, connected, and interactive signage. Forget static signs—ThingyChat makes information come alive.
 
