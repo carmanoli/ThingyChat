@@ -19,6 +19,10 @@ The goal of ThingyChat is not to be a single device, but a versatile and modular
 *   **The Muscle:** An **Arduino Uno R4** is connected via serial communication. It acts as a powerful and reliable driver for 5V components like WS2812 LED matrices and 7-segment displays, offloading the real-time display logic from the ESP32.
 *   **The Interface:** A **Progressive Web App (PWA)** serves as the universal remote control. It runs in any browser and communicates with the ESP32 via WebSockets, allowing users to send commands, draw emojis, and input data.
 *   **The Body:** A fully **modular, 3D-printed mounting system** inspired by Tamiya plates allows for rapid prototyping and easy assembly of different "Thingy" configurations.
+*   
+<p align="center">
+  <img src="image/3DPrint.jpg" alt="3DPrint" width="45%">
+</p>
 
 ---
 
