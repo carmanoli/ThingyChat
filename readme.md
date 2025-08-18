@@ -18,14 +18,28 @@ The goal of ThingyChat is not to be a single device, but a versatile and modular
 *   **The Brain:** A **Seeed Xiao ESP32-S3** serves as the main processor. It handles Wi-Fi connectivity (with a user-friendly Wi-Fi Manager), runs a WebSocket server for real-time communication, and acts as the main logic controller.
 *   **The Muscle:** An **Arduino Uno R4** is connected via serial communication. It acts as a powerful and reliable driver for 5V components like WS2812 LED matrices and 7-segment displays, offloading the real-time display logic from the ESP32.
 *   **The Interface:** A **Progressive Web App (PWA)** serves as the universal remote control. It runs in any browser and communicates with the ESP32 via WebSockets, allowing users to send commands, draw emojis, and input data.
-*   **The Body:** A fully **modular, 3D-printed mounting system** inspired by Tamiya plates allows for rapid prototyping and easy assembly of different "Thingy" configurations.
-*   
+*   **The Body:** A fully **modular, 3D-printed mounting system** inspired by Tamiya plates allows for rapid prototyping and easy assembly of different "Thingy" configurations. >I will bre putting the STL files in \3DPrint folder
+
 <p align="center">
   <img src="image/3DPrint.jpg" alt="3DPrint" width="45%">
 </p>
 
 ---
+## 🛜 WIFI setup
 
+When you bootup your device and it is no able to connect to wifi, you use your phone to setup the initial WIFI configuratiom.
+
+
+<p align="center">
+  <img src="image/wifi_setup_01.jpg" alt="Wifi Setup Photo 1" width="30%">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="image/wifi_setup_02.jpg" alt="Wifi Setup Photo 2" width="30%">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="image/wifi_setup_03.jpg" alt="Wifi Setup Photo 3" width="30%">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+</p>
+
+---
 ## 🚀 The "Thingy" Projects
 
 To demonstrate the platform's versatility, I have developed three initial proof-of-concept projects:

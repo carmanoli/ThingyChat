@@ -5,14 +5,14 @@
 #include <DNSServer.h>
 #include "wifi_config.h"
 
-// Definição das variáveis declaradas como extern em wifi_ap.h
+// Definition of variables declared as extern in wifi_ap.h
 WebServer server(80);
 DNSServer dnsServer;
 
 void handleRoot() {
   String html = R"rawliteral(
     <!DOCTYPE html>
-    <html lang="pt">
+    <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,13 +28,13 @@ void handleRoot() {
     </head>
     <body>
       <div>
-        <h1>Configurar Wi-Fi - ThingyChat</h1>
+        <h1>Wi-Fi Setup - ThingyChat</h1>
         <form action="/save" method="POST">
-          <label for="ssid">Nome da Rede (SSID):</label><br>
-          <input type="text" id="ssid" name="ssid" placeholder="Ex: MinhaCasa_WiFi" required><br>
+          <label for="ssid">Network Name (SSID):</label><br>
+          <input type="text" id="ssid" name="ssid" placeholder="Ex: MyHome_WiFi" required><br>
           <label for="pass">Password:</label><br>
-          <input type="password" id="pass" name="pass" placeholder="A sua password de Wi-Fi"><br><br>
-          <input type="submit" value="Guardar e Reiniciar">
+          <input type="password" id="pass" name="pass" placeholder="Your Wi-Fi password"><br><br>
+          <input type="submit" value="Save and Restart">
         </form>
       </div>
     </body>
@@ -45,14 +45,14 @@ void handleRoot() {
 }
 
 void handleSave() {
-  Serial.println("[AP] Recebido pedido para guardar credenciais.");
+  Serial.println("[AP] Received request to save credentials.");
   String ssid = server.arg("ssid");
   String pass = server.arg("pass");
   saveWiFiCredentials(ssid, pass);
   String htmlResponse = R"rawliteral(
-    <!DOCTYPE html><html><head><title>Guardado!</title></head><body>
-    <h1>Credenciais guardadas com sucesso!</h1>
-    <p>O dispositivo vai reiniciar e tentar conectar-se à rede ' )rawliteral" + ssid + R"rawliteral('. Por favor, volte a ligar-se à sua rede Wi-Fi normal.</p>
+    <!DOCTYPE html><html><head><title>Saved!</title></head><body>
+    <h1>Credentials saved successfully!</h1>
+    <p>The device will restart and attempt to connect to network ' )rawliteral" + ssid + R"rawliteral('. Please reconnect to your normal Wi-Fi network.</p>
     </body></html>
   )rawliteral";
   server.send(200, "text/html", htmlResponse);
@@ -61,15 +61,15 @@ void handleSave() {
 }
 
 void startAPMode() {
-  Serial.println("[AP] A iniciar modo Access Point...");
+  Serial.println("[AP] Starting Access Point mode...");
   WiFi.disconnect();
   WiFi.mode(WIFI_AP);
   bool success = WiFi.softAP("ThingyChat-Setup", "password");
   if (!success) {
-    Serial.println("[AP] Falha ao criar AP");
+    Serial.println("[AP] Failed to create AP");
     return;
   }
-  IPAddress apIP(192, 168, 4, 1);
+IPAddress apIP(192, 168, 4, 1);
   WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
   dnsServer.start(53, "*", apIP);
   server.on("/", HTTP_GET, handleRoot);
@@ -79,8 +79,8 @@ void startAPMode() {
     server.send(302, "text/plain", "");
   });
   server.begin();
-  Serial.print("[AP] Ponto de acesso 'ThingyChat-Setup' criado. Conecte-se a esta rede.\n");
-  Serial.print("[AP] Para configurar, acesse: http://");
+  Serial.print("[AP] Access point 'ThingyChat-Setup' created. Connect to this network.\n");
+  Serial.print("[AP] To configure, visit: http://");
   Serial.println(apIP);
 }
 

@@ -4,7 +4,7 @@
 
 void initSerial() {
   Serial1.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
-  Serial.println("[Serial] UART (D6/D7) inicializado");
+  Serial.println("Serial inicializado.");
 }
 
 void handleSerial() {

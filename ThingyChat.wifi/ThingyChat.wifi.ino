@@ -47,10 +47,6 @@ void loop() {
   } else {
     webSocket.loop();  // WebSocket
   }
-
-
-
-
   // keepAlive
   static unsigned long prev = 0;
   if (millis() - prev >= 30000) {
