@@ -9,13 +9,20 @@ void initSerial() {
 
 void handleSerial() {
   if (Serial.available()) {
-    String cmd = Serial.readStringUntil('\n');
-    sendToArduino(cmd.c_str());
+
+    String comandoUSB = Serial.readStringUntil('\n');
+    comandoUSB.trim();
+    if (comandoUSB == "reset") {
+      Serial.println("Restarting...");
+      delay(100);
+      esp_restart();  // Full software reset
+    } else {
+      sendToArduino(comandoUSB.c_str());
+    }
   }
 
   if (Serial1.available()) {
     String cmd = Serial1.readStringUntil('\n');
-    Serial.print("comandoArduino: ");
     Serial.println(cmd);
   }
 }

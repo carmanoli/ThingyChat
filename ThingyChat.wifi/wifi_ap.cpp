@@ -1,13 +1,11 @@
-// wifi_ap.cpp
 #include "wifi_ap.h"
 #include <WiFi.h>
 #include <WebServer.h>
 #include <DNSServer.h>
 #include "wifi_config.h"
 
-// Definition of variables declared as extern in wifi_ap.h
-WebServer server(80);
-DNSServer dnsServer;
+static WebServer server(80);
+static DNSServer dnsServer;
 
 void handleRoot() {
   String html = R"rawliteral(
@@ -40,7 +38,6 @@ void handleRoot() {
     </body>
     </html>
   )rawliteral";
-  
   server.send(200, "text/html", html);
 }
 
@@ -49,12 +46,7 @@ void handleSave() {
   String ssid = server.arg("ssid");
   String pass = server.arg("pass");
   saveWiFiCredentials(ssid, pass);
-  String htmlResponse = R"rawliteral(
-    <!DOCTYPE html><html><head><title>Saved!</title></head><body>
-    <h1>Credentials saved successfully!</h1>
-    <p>The device will restart and attempt to connect to network ' )rawliteral" + ssid + R"rawliteral('. Please reconnect to your normal Wi-Fi network.</p>
-    </body></html>
-  )rawliteral";
+  String htmlResponse = "<!DOCTYPE html><html><head><title>Saved!</title></head><body><h1>Credentials saved successfully!</h1><p>The device will restart and attempt to connect to network '" + ssid + "'. Please reconnect to your normal Wi-Fi network.</p></body></html>";
   server.send(200, "text/html", htmlResponse);
   delay(1000);
   ESP.restart();
@@ -69,7 +61,7 @@ void startAPMode() {
     Serial.println("[AP] Failed to create AP");
     return;
   }
-IPAddress apIP(192, 168, 4, 1);
+  IPAddress apIP(192, 168, 4, 1);
   WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
   dnsServer.start(53, "*", apIP);
   server.on("/", HTTP_GET, handleRoot);

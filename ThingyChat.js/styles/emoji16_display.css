@@ -1,0 +1,26 @@
+/* Ficheiro: styles/emoji16_display.css */
+
+.control-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#emoji-preview {
+    display: flex;
+    justify-content: center; /* Centra a grelha de pré-visualização */
+    align-items: center;
+    min-height: 100px; /* Dá espaço mesmo quando não há nada */
+}
+
+/* Reutilizando estilos da página da biblioteca, mas adaptados */
+.emoji-grid-container {
+    display: grid;
+    gap: 1px;
+    border: 1px solid #ddd;
+    background-color: #eee;
+}
+
+.emoji-grid-pixel {
+    width: 12px; /* Um bom tamanho para pré-visualização */
+    height: 12px;
+}

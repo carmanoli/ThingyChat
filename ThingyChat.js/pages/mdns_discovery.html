@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descoberta de Dispositivos</title>
+    <link rel="stylesheet" href="/styles/websocket.css">
+    <style>
+        #deviceList { margin-top: 20px; }
+        .device-item { padding: 10px; border: 1px solid #ccc; margin-bottom: 5px; cursor: pointer; }
+        .device-item:hover { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Dispositivos Disponíveis</h1>
+    <div id="status">Procurando dispositivos...</div>
+    <div id="deviceList"></div>
+    <div class="mt-3">
+        <label for="manualIpInput">IP Manual: </label>
+        <input type="text" id="manualIpInput" placeholder="Ex: 10.0.1.174">
+        <button id="manualIpBtn" class="btn btn-secondary">Conectar com IP</button>
+    </div>
+    <div class="mt-3">
+        <button id="refreshBtn" class="btn btn-primary">Atualizar Lista</button>
+        <button id="manualBtn" class="btn btn-secondary">Conectar Manualmente</button>
+    </div>
+    <script src="/js/mdns_discovery.js"></script>
+</body>
+</html>

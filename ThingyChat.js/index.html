@@ -1,10 +1,11 @@
+<!--index.html -->
 <!DOCTYPE html>
 <html lang="pt">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ThingyChat</title>
-    <link rel="icon" type="image/png" href="image/logo.png">
+    <link rel="icon" type="image/png" href="image/logo.png" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,7 +13,6 @@
     <link href="styles/index.css" rel="stylesheet" />
   </head>
   <body>
-    <!-- Header (sem alterações) -->
     <header class="navbar navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
         <button
@@ -23,37 +23,52 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="image/logo.png"  width="30" height="30" class="d-inline-block align-text-top me-2">
-                ThingyChat
-            </a>
+          <img
+            src="image/logo.png"
+            width="30"
+            height="30"
+            class="d-inline-block align-text-top me-2"
+          />
+          ThingyChat
+        </a>
       </div>
     </header>
 
-    <!-- NOVO: Wrapper para o layout principal -->
     <div class="page-wrapper">
-      <!-- Sidebar -->
-      <aside id="sidebar" class="bg-dark text-white p-3">
-        <ul class="nav nav-pills flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="pages/editor.html">Emoji Editor</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="pages/websocket.html"
-              >Remote Control</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="pages/presets.html">Presets</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="pages/memento_mori.html"
-              >Memento Mori</a
-            >
-          </li>
-        </ul>
-      </aside>
+      
+<aside id="sidebar" class="bg-dark text-white p-3">
+  <!-- Secção de Ferramentas de Emoji -->
+  <h6 class="text-white-50">😊 Emojis</h6>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+      <!-- Este link agora carrega uma PÁGINA de configurações -->
+      <a class="nav-link text-white" href="pages/library_settings.html">📂 Library Settings</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="pages/emoji_library.html">📚 Emoji Library</a>
+    </li>
+    <li class="nav-item">
+      <!-- O 'active' será gerido pelo sidebar.js, mas podemos começar aqui -->
+      <a class="nav-link active" href="pages/editor.html">🎨 Emoji Editor</a>
+    </li>
+  </ul>
 
-      <!-- Conteúdo Principal -->
+  <!-- Separador visual -->
+  <hr class="text-white-50">
+
+  <!-- Secção de Dispositivos Conectados -->
+  <h6 class="text-white-50">⚙️ Devices</h6>
+  <ul id="device-list" class="nav nav-pills flex-column">
+      <!-- O JavaScript irá popular esta lista dinamicamente -->
+      <li class="nav-item">
+            <a class="nav-link text-white" href="pages/websocket.html">📡 Remote Control</a>
+      </li>
+      <li class="nav-item">
+            <a id="devicePageLink" class="nav-link text-white disabled" href="#">🔌 Device Page</a>
+      </li>
+  </ul>
+</aside>
+
       <main id="main-content">
         <!-- O conteúdo será carregado aqui dinamicamente -->
       </main>
@@ -61,7 +76,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/sidebar.js"></script>
-        <!-- NOVO: Carrega o nosso serviço central de WebSocket -->
     <script src="js/websocket_service.js"></script>
+    <script src="js/emoji_library_service.js"></script>
+     <!-- NOVA BIBLIOTECA PARA CRIAR GIFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+
   </body>
 </html>

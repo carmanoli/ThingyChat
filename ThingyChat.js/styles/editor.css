@@ -68,3 +68,110 @@ textarea {
     border-radius: 4px;
     resize: vertical; /* Permite redimensionar verticalmente */
 }
+
+/* Ficheiro: styles/editor.css (Adicionar no final) */
+
+.timeline-container {
+  border: 1px solid #dee2e6;
+  padding: 15px;
+  border-radius: 0.375rem;
+  background-color: #f8f9fa;
+}
+
+.timeline-frames {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto; /* Permite scroll horizontal se houver muitos frames */
+  padding-bottom: 10px;
+}
+
+.frame {
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  background-color: #fff;
+  flex-shrink: 0; /* Impede que os frames encolham */
+  position: relative;
+}
+
+.frame.active {
+  border-color: #0d6efd;
+  box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+}
+
+.frame-preview {
+  display: grid;
+  gap: 1px;
+}
+
+.frame-pixel {
+  width: 5px; /* Pixeis pequenos para a preview */
+  height: 5px;
+}
+
+.frame-info {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.frame-duration {
+  width: 60px;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.frame-delete-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    cursor: pointer;
+    display: none; /* Escondido por defeito */
+}
+
+.frame:hover .frame-delete-btn {
+    display: block; /* Aparece ao passar o rato */
+}
+
+.transparent-bg {
+    background-color: #e0e0e0; /* Cor de fundo para browsers antigos */
+    background-image:
+        linear-gradient(45deg, #a0a0a0 25%, transparent 25%),
+        linear-gradient(-45deg, #a0a0a0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #a0a0a0 75%),
+        linear-gradient(-45deg, transparent 75%, #a0a0a0 75%);
+    background-size: 10px 10px; /* Tamanho dos quadrados do padrão */
+    background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+
+.frame-info {
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+.frame-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+.frame-duration, .frame-brightness {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#pixel-grid.fill-mode {
+    cursor: crosshair; /* Um cursor comum para ferramentas de preenchimento */
+}
+

@@ -1,177 +1,169 @@
-#include <FastLED.h>
-#include "Config.h"
+// #include <FastLED.h>
+#include "Config.h"  // Onde ACTIVE_PROJECT_ID e ACTIVE_PROJECT_NAME estão definidos
 #include "DisplayText.h"
 #include "Emojis8.h"
 #include "Emojis16.h"
+#include "core_cm4.h"
 
 
-CRGB leds[NUM_LEDS];  // Agora está declarado aqui
-
-// --- Criação do objeto Geiger ---
-#if ACTIVE_PROJECT == 0
-  #include "Geiger.h"
-  #include "Radioactive.h"
-  Geiger myGeiger(GEIGER_INTERRUPT_PIN, GEIGER_STROBE_PIN);
+#if (ACTIVE_FEATURES & FEATURE_ANIMATION_PLAYER)
+  #include "AnimationPlayer.h"
+  // #include "VolatileAnimation.cpp"
 #endif
 
-#if ACTIVE_PROJECT == 2  
-  #include "MementoMori.h"
+#if (ACTIVE_FEATURES & FEATURE_GEIGER_COUNTER)
+#include "Geiger.h"
+#include "Radioactive.h"
+Geiger myGeiger(GEIGER_INTERRUPT_PIN, GEIGER_STROBE_PIN);
 #endif
 
 
 
 
-void setup() {
-  // pinMode(D3, OUTPUT);
+CRGB leds[NUM_LEDS];
 
-  Serial.begin(9600);
-  delay(1000);
-  Serial.println("Iniciando WS2812 com FastLED...");
-
-  Serial1.begin(9600, SERIAL_8N1);
-
-  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
-  FastLED.setBrightness(BRIGHTNESS);
-
-  Serial.println("LEDs prontos!");
+// --- VARIÁVEL GLOBAL PARA RASTREAR O HANDSHAKE ---
+bool handshakeCompleted = false;  // Indica se o handshake foi concluído
 
 
-  Serial.println("LEDs prontos!");
-  Serial.println("Comandos disponíveis:");
-  Serial.println("d3h - Coloca D3 em HIGH");
-  Serial.println("d3l - Coloca D3 em LOW");
-
-  #if ACTIVE_PROJECT == 0
-    myGeiger.begin();
-  #endif
-
-  Serial.println("Booting...");
+void softwareReset() {
+  NVIC_SystemReset();
 }
 
-bool booting = true;
-int display = 0;
-// 0 - Radioactive
-// 2 - white test
-
-int mode = 0;
-// 0 - Radioactive
-
-
-void loop() {
-  if (booting) {
-    booting = false;
-    clearAllMatrices();
-
-
-    #if ACTIVE_PROJECT == 1 // Test leds
-      for (int i = 0; i < NUM_LEDS; i++) {
-        leds[i] = getColorFromString("WHITE");
-        FastLED.show();
-
-        Serial.print("Testing Led: ");
-        Serial.println(i);
+// --- FUNÇÃO DE HANDSHAKE ---
+void handleHandshake() {
+  if (Serial1.available() > 0) {
+    String command = Serial1.readStringUntil('\n');
+    command.trim();
+    if (command.length() > 0) {  // Verifica se o comando não está vazio
+      Serial.print("Arduino: Comando recebido: ");
+      Serial.println(command);
+      if (command == "GET_NAME") {
+        String response = "NAME:" + String(ACTIVE_PROJECT_NAME);
+        Serial1.println(response);  // Responde imediatamente
+        Serial.print("Arduino: Handshake OK! Nome enviado: ");
+        Serial.println(response);
+        handshakeCompleted = true;                   // Marca o handshake como concluído
+        while (Serial1.available()) Serial1.read();  // Limpa o buffer
       }
-    
-    #endif
-
-
-    if (display == 1) {
-      displayString("CARLOS", 0);
-      displayString("OLIVEIRA", 1);
     }
+  }
+}
 
+// --- SETUP ---
+void setup() {
+  Serial.begin(115200);
+  Serial1.begin(115200, SERIAL_8N1);  // Velocidade de comunicação com o Xiao
+  delay(1000);                        // Dar tempo para as portas seriais estabilizarem
 
-    #if ACTIVE_PROJECT == 0
-      drawRadioactiveSymbol16x16(leds, NUM_LEDS, radioactive_block);
-      FastLED.show();
-      delay(10);
-    #endif
+  Serial.println("Arduino: Iniciando...");
 
-    #if ACTIVE_PROJECT == 2
-    FastLED.clear();
-    
-    // Draw emojis on each matrix
-    MementMori::drawEgg(leds, 0, NUM_LEDS);    // First matrix (index 0)
-    MementMori::drawHeart(leds, 1, NUM_LEDS);  // Second matrix (index 1)
-    MementMori::drawSkull(leds, 2, NUM_LEDS);  // Third matrix (index 2)
-    
-    FastLED.show();
-    #endif
-
-
-    #if ACTIVE_PROJECT == 3
-      // Defina quais matrizes físicas formarão o seu ecrã 16x16
-      
-      // Exemplo: Matrizes 0, 1 (linha de cima) e 3, 4 (linha de baixo correspondente)
-      // A ordem é: [Topo-Esquerdo, Topo-Direito, Baixo-Esquerdo, Baixo-Direito]
-      const int emojiBlock[4] = {0, 1, 2, 3}; // <<< AJUSTE ESTES ÍNDICES para a sua fiação
-
-      // Chama a nova função genérica para desenhar o smiley
-      //drawEmoji16x16(leds, NUM_LEDS, emojiBlock, smileyFace16);
-      //FastLED.show(); // Atualiza o painel de LEDs
-
-      int animationSpeed = 10; 
-
-      // Call the NEW animated function
-      drawEmoji16x16_Animated(leds, NUM_LEDS, emojiBlock, smileyFace16, animationSpeed);
-    #endif
-
-
+  // Tenta o handshake no arranque (com timeout)
+  Serial.println("Arduino: Aguardando 'GET_NAME' do Xiao...");
+  unsigned long startTime = millis();
+  while (millis() - startTime < 6000) {
+    handleHandshake();
+    if (handshakeCompleted) {
+      break;
+    }
+    delay(10);  // Pequena pausa
+  }
+  if (!handshakeCompleted) {
+    Serial.println("Arduino: Handshake falhou (timeout). Continuando a verificar no loop...");
   }
 
-  #if ACTIVE_PROJECT == 0
+  // Continua com o resto do setup
+  Serial.println("Arduino: Iniciando FastLED...");
+  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  FastLED.setBrightness(BRIGHTNESS);
+  Serial.println("Arduino: LEDs prontos!");
+
+  #if (ACTIVE_FEATURES & FEATURE_ANIMATION_PLAYER)
+    Serial.println("Arduino: A iniciar o Animation Player...");
+    AnimationPlayer::begin(leds); // <-- CORRIGIDO: Passa o 'leds'
+  #endif
+  #if (ACTIVE_FEATURES & FEATURE_GEIGER_COUNTER)
+    Serial.println("Arduino: A iniciar o Geiger Counter...");
+    myGeiger.begin();
+  #endif
+}
+
+// --- LOOP PRINCIPAL ---
+bool hasBooted = false;
+
+void loop() {
+  // Continua respondendo a GET_NAME mesmo após o handshake
+  handleHandshake();
+
+  // Lógica que corre apenas uma vez após o setup
+  if (!hasBooted) {
+    hasBooted = true;
+    clearAllMatrices();
+    Serial.println("Arduino: Lógica de arranque a correr...");
+
+    #if (ACTIVE_FEATURES & FEATURE_EMOJI16_DISPLAY)
+      const int emojiBlock[4] = { 0, 1, 2, 3 };
+      drawEmoji16x16_Animated(leds, NUM_LEDS, emojiBlock, smileyFace16, 10);
+    #endif
+
+    #if (ACTIVE_FEATURES & FEATURE_MEMENTO_MORI)
+        MementMori::drawEgg(leds, 0, NUM_LEDS);
+        MementMori::drawHeart(leds, 1, NUM_LEDS);
+        MementMori::drawSkull(leds, 2, NUM_LEDS);
+        FastLED.show();
+    #endif
+
+
+
+#if (ACTIVE_FEATURES & FEATURE_GEIGER_COUNTER)
+    drawRadioactiveSymbol16x16(leds, NUM_LEDS, radioactive_block);
+    FastLED.show();
+
+#endif
+
+
+
+    Serial.println("Arduino: Lógica de arranque concluída.");
+  }
+
+  // Lógica contínua do loop
+
+  #if (ACTIVE_FEATURES & FEATURE_ANIMATION_PLAYER)
+      AnimationPlayer::play(leds); // <-- CORRIGIDO: Passa o 'leds'
+  #endif
+  #if (ACTIVE_FEATURES & FEATURE_GEIGER_COUNTER)
     myGeiger.update();
-    // E aqui a lógica para lidar com os dados do Geiger
     myGeiger.handle(Serial1);
-    unsigned long currentCPM = myGeiger.getCPM();
-    if (currentCPM > 100) {
-      Serial1.println("GEIGER_LEVEL:2");
-    } else if (currentCPM > 50) {
-      Serial1.println("GEIGER_LEVEL:1");
-    }
-
-
-  #elif ACTIVE_PROJECT == 1
-    // myAirQuality.update();
-    // handleAirQualityMode();
   #endif
 
 
-
-
-
-  if (Serial.available()) {
-    String comandoUSB = Serial.readStringUntil('\n');
-    comandoUSB.trim();  // Remove espaços e quebras de linha
-      Serial1.println(comandoUSB);
-
-/*
-    // Verifica comandos para o pino D3
-    if (comandoUSB == "d3h") {
-      digitalWrite(D3, HIGH);
-      Serial.println("D3 set to HIGH");
-    } else if (comandoUSB == "d3l") {
-      digitalWrite(D3, LOW);
-      Serial.println("D3 set to LOW");
-    } else {
-      // Se não for um comando local, envia para o Serial1
-      Serial1.println(comandoUSB);
-    }
-    */
-  }
-
+  // Ouve por comandos do Xiao (exceto GET_NAME, que é tratado por handleHandshake)
   if (Serial1.available()) {
     String comandoXiao = Serial1.readStringUntil('\n');
-    Serial.print("comandoXiao:");
-    Serial.println(comandoXiao);
+    comandoXiao.trim();
+    if (comandoXiao.length() > 0 && comandoXiao != "GET_NAME") {  // Ignora GET_NAME
+      Serial.print("Arduino: Comando do Xiao -> ");
+      Serial.println(comandoXiao);
+      if (comandoXiao == "HEART") {
+        Serial.println("Arduino: A desenhar Coração...");
+        // drawEmojiOnMatrix(leds, NUM_LEDS, 0, heartPattern, CRGB::Red);
+      }
+    }
+  }
 
-    comandoXiao.replace("\r", "");
-    comandoXiao.replace("\n", "");
-
-    if (comandoXiao == "HEART") {
-      Serial.println("Display Heart");
-      drawEmojiOnMatrix(leds, NUM_LEDS, 0, heartPattern, CRGB::Red);
-      drawEmojiOnMatrix(leds, NUM_LEDS, 1, heartPattern, CRGB::Green);
+  // Ouve por comandos do Monitor Serial (para debug) e reencaminha para o Xiao
+  if (Serial.available()) {
+    String comandoUSB = Serial.readStringUntil('\n');
+    comandoUSB.trim();
+    if (comandoUSB == "reset") {
+      Serial.println("Resetting...");
+      softwareReset();  // Enable watchdog for 15ms
+      while (1)
+        ;  // Wait for reset
+    } else {
+      Serial.print("Arduino->Xiao:");
+      Serial.println(comandoUSB);
+      Serial1.println(comandoUSB);
     }
   }
 }

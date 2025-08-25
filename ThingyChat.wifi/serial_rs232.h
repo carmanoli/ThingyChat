@@ -2,11 +2,17 @@
 #ifndef SERIAL_RS232_H
 #define SERIAL_RS232_H
 
+// worked but conflict iwth camera
 #define RX_PIN D9
 #define TX_PIN D10
+
+//#define RX_PIN D3
+//#define TX_PIN D4
+
+
 // #define RX_PIN D6
 // #define TX_PIN D7
-#define BAUD_RATE 9600
+#define BAUD_RATE 115200
 
 void initSerial();
 void handleSerial();

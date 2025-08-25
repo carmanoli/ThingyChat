@@ -1,0 +1,62 @@
+<!-- Ficheiro: pages/emoji16_display.html (VERSÃO COMPLETA E CORRIGIDA) -->
+
+<link rel="stylesheet" href="styles/emoji16_display.css">
+
+<!-- Títulos Centrados -->
+<div class="text-center">
+    <h1>Emoji Display Control</h1>
+    <p class="lead">Control your 16x16 emoji display device</p>
+</div>
+
+<div class="control-container">
+
+    <!-- Secção 0: Conexão -->
+    <div class="control-section card p-3 mb-4">
+        <h5 class="card-title">Connection</h5>
+        <div class="input-group">
+            <input type="text" id="hostInput" class="form-control" placeholder="e.g., emoji16_display.local or IP address">
+            <button id="connectBtn" class="btn btn-success">Connect</button>
+        </div>
+        <div id="connectionStatus" class="mt-2 text-center">Connection Status: <span id="status">Unknown</span></div>
+    </div>
+    
+
+    <!-- NOVA SECÇÃO: Criar a partir da Câmara -->
+    <div class="control-section card p-3 mb-4">
+        <h5 class="card-title">Create from Device Camera</h5>
+        <p class="card-text small text-muted">A 16x16 pixelated photo will be taken and opened in the editor.</p>
+        <button id="takePhotoBtn" class="btn btn-warning" disabled>📷 Create Emoji from Photo</button>
+    </div>
+
+    <!-- Secção 1: Enviar Emojis da Biblioteca -->
+    <div class="control-section card p-3 mb-4">
+        <h5 class="card-title">Send Emoji from Library</h5>
+        <div class="input-group">
+            <select id="emoji-selector" class="form-select" disabled> <!-- Começa desativado -->
+                <option value="">Select an emoji...</option>
+                <!-- A lista de emojis será preenchida aqui -->
+            </select>
+            <button id="sendEmojiBtn" class="btn btn-primary" disabled>Send Emoji</button> <!-- Começa desativado -->
+        </div>
+        <div id="emoji-preview" class="mt-3"></div> <!-- Área para pré-visualizar o emoji selecionado -->
+    </div>
+
+    <!-- Secção 2: Enviar Comandos Predefinidos -->
+    <div class="control-section card p-3">
+        <h5 class="card-title">Send Predefined Command</h5>
+        <div class="input-group">
+            <select id="command-selector" class="form-select" disabled> <!-- Começa desativado -->
+                <option value="">Select a command...</option>
+                <option value="CMD_HEART">Display: Heart</option>
+                <option value="CMD_CROSS">Display: Cross</option>
+                <option value="CMD_SMILE">Display: Smile</option>
+                <option value="CMD_OFF">Turn Displays Off</option>
+            </select>
+            <button id="sendCommandBtn" class="btn btn-secondary" disabled>Send Command</button> <!-- Começa desativado -->
+        </div>
+    </div>
+    
+</div>
+
+<!-- Carrega APENAS o script desta página -->
+<script src="js/emoji16_display.js"></script>

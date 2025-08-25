@@ -87,4 +87,14 @@ ThingyChat is a living project. Future plans include:
 *   Developing a "Smart WC Occupancy" sign with remote wireless sensors.
 *   Creating detailed documentation and tutorials on Hackster.io to help others build their own "Thingies".
 
+
+*   Emoji animations
+*   HAbility to transfer enoji definitiosn to xiao, and from ziao to ardino
+*   Hability do take a photo from Xiao and transmitit to app an manipulated it
+*   Hability to react to user intention (detect happiness or sadness)
+
+2. Enable PSRAM:
+For the camera to work, you must enable the PSRAM (Pseudostatic RAM) function. Go to Tools and ensure the "PSRAM" option is enabled. 
+
+
 Thank you for checking out my project!

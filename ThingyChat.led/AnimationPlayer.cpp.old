@@ -1,0 +1,139 @@
+// File: AnimationPlayer.cpp
+#include "AnimationPlayer.h"
+#include "Config.h" // For NUM_LEDS if needed
+
+// --- Data Structure to hold ONE animation in RAM ---
+struct Animation {
+  int frameCount;
+  int width;
+  int height;
+  int durations[MAX_FRAMES];
+  uint8_t brightness[MAX_FRAMES];
+  CRGB pixelData[MAX_FRAMES][MAX_HEIGHT][MAX_WIDTH];
+  
+  // Playback state
+  int currentFrame;
+  unsigned long lastFrameTime;
+  bool isPlaying;
+  String direction;
+  bool loop;
+  int playbackDirection; // 1 for forward, -1 for backward
+};
+
+static Animation currentAnimation;
+
+// --- Helper function to draw a frame ---
+// This is similar to your Emojis16.cpp function, but uses the dynamic data
+void drawFrame(int frameIndex) {
+  // Assuming a 2x2 layout of 8x8 matrices for a 16x16 display
+  const int emojiBlock[4] = {0, 1, 2, 3}; // Adjust if your wiring is different
+
+  for (int quadrant = 0; quadrant < 4; ++quadrant) {
+    int matrixIndex = emojiBlock[quadrant];
+    int startLed = matrixIndex * 64;
+
+    int patternOffsetY = (quadrant >= 2) ? 8 : 0;
+    int patternOffsetX = (quadrant % 2 != 0) ? 8 : 0;
+
+    for (int localY = 0; localY < 8; ++localY) {
+      for (int localX = 0; localX < 8; ++localX) {
+        int patternY = localY + patternOffsetY;
+        int patternX = localX + patternOffsetX;
+        int ledIndex = startLed + (localY * 8 + localX);
+        
+        if (ledIndex < NUM_LEDS) {
+          leds[ledIndex] = currentAnimation.pixelData[frameIndex][patternY][patternX];
+        }
+      }
+    }
+  }
+  FastLED.setBrightness(currentAnimation.brightness[frameIndex]);
+  FastLED.show();
+}
+
+
+// --- Public Functions ---
+
+void AnimationPlayer::begin() {
+  currentAnimation.isPlaying = false;
+  currentAnimation.frameCount = 0;
+}
+
+void AnimationPlayer::update() {
+  // This is the core of the binary protocol receiver
+  if (Serial1.available() > 0) {
+    // A command always starts with '<' and ends with '>'
+    String command = Serial1.readStringUntil('>');
+    
+    if (command.startsWith("<ANIM:")) {
+      Serial.println("Arduino: Received animation start command!");
+      currentAnimation.isPlaying = false; // Stop current playback
+
+      // Example command: <ANIM:16:16:8:pingpong:1> (width:height:frames:direction:loop)
+      sscanf(command.c_str(), "<ANIM:%d:%d:%d:%[^:]:%d", 
+             &currentAnimation.width, 
+             &currentAnimation.height, 
+             &currentAnimation.frameCount,
+             &currentAnimation.direction,
+             &currentAnimation.loop);
+      
+      // Now, read the binary data that follows
+      
+      // 1. Read durations (frameCount * 2 bytes for int)
+      Serial1.readBytes((uint8_t*)currentAnimation.durations, currentAnimation.frameCount * sizeof(int));
+      
+      // 2. Read brightness (frameCount * 1 byte)
+      Serial1.readBytes(currentAnimation.brightness, currentAnimation.frameCount);
+
+      // 3. Read all pixel data (frameCount * width * height * 3 bytes)
+      int totalPixelBytes = currentAnimation.frameCount * currentAnimation.width * currentAnimation.height * sizeof(CRGB);
+      Serial1.readBytes((uint8_t*)currentAnimation.pixelData, totalPixelBytes);
+      
+      Serial.println("Arduino: Animation data received and loaded!");
+      
+      // Start playback
+      currentAnimation.currentFrame = 0;
+      currentAnimation.lastFrameTime = millis();
+      currentAnimation.isPlaying = true;
+      currentAnimation.playbackDirection = 1; // Start forward
+    }
+  }
+}
+
+void AnimationPlayer::play() {
+  if (!currentAnimation.isPlaying || currentAnimation.frameCount == 0) {
+    return;
+  }
+
+  unsigned long now = millis();
+  if (now - currentAnimation.lastFrameTime >= currentAnimation.durations[currentAnimation.currentFrame]) {
+    currentAnimation.lastFrameTime = now;
+    
+    // Draw the current frame BEFORE advancing to the next
+    drawFrame(currentAnimation.currentFrame);
+
+    // Advance the frame counter
+    currentAnimation.currentFrame += currentAnimation.playbackDirection;
+
+    // Handle loop and direction logic
+    if (currentAnimation.playbackDirection == 1 && currentAnimation.currentFrame >= currentAnimation.frameCount) { // Reached the end (forward)
+      if (currentAnimation.loop) {
+        if (currentAnimation.direction == "pingpong") {
+          currentAnimation.playbackDirection = -1;
+          currentAnimation.currentFrame = currentAnimation.frameCount - 2;
+        } else {
+          currentAnimation.currentFrame = 0;
+        }
+      } else {
+        currentAnimation.isPlaying = false; // Stop
+      }
+    } else if (currentAnimation.playbackDirection == -1 && currentAnimation.currentFrame < 0) { // Reached the start (backward)
+      if (currentAnimation.loop) {
+        currentAnimation.playbackDirection = 1;
+        currentAnimation.currentFrame = 1;
+      } else {
+        currentAnimation.isPlaying = false; // Stop
+      }
+    }
+  }
+}

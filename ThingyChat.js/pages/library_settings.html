@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h1>Emoji Library Settings</h1>
+      <p class="lead">
+        Select a local folder on your computer to store and manage your emoji
+        JSON files.
+      </p>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Selected Library Folder</h5>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">📂</span>
+            <input
+              type="text"
+              id="selectedFolderInput"
+              class="form-control"
+              placeholder="No folder selected"
+              readonly
+            />
+          </div>
+
+          <button id="selectFolderBtn" class="btn btn-primary">
+            Choose Folder...
+          </button>
+
+          <p class="card-text mt-3 text-muted small">
+            Your browser will ask for permission to access this folder. This
+            access is temporary and is only used to read and write your emoji
+            files. Your selection will be remembered for this session.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- O script que dá vida a esta página -->
+<script src="js/library_settings.js"></script>
